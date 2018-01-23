@@ -1,11 +1,12 @@
 goenv = GOPATH=`pwd` GOBIN=`pwd`/bin
+staticgo = -x -a -tags netgo -installsuffix netgo
 
 # Rules
 rule cp
   command = cp -rf $in $out
 
 rule gobuild
-  command = $goenv go build -o $out $in
+  command = $goenv GCGO_ENABLED=0 go build -a -installsuffix cgo -o $out $in
 
 # Build (binary)
 build out/uaparser: gobuild uaparser.go

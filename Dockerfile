@@ -1,14 +1,13 @@
 # Docker image to build the binary
-FROM golang:1.9.2-stretch
+FROM golang:alpine
 
 ARG UID=1000
 ARG GID=1000
 
+RUN apk add --no-cache shadow ninja make gcc musl-dev
+
 RUN groupadd -o -g $GID user \
   && useradd -M -o -g $GID -u $UID user
-
-RUN apt-get update \
-  && apt-get install -y ninja-build
 
 WORKDIR "/project"
 CMD ["make", "all"]

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
 
@@ -15,11 +15,20 @@ func main() {
 			log.Fatal(err)
 		}
 
-		client := parser.Parse(r.UserAgent())
+		query := r.URL.Query()
 
-		fmt.Fprintf(w, fmt.Sprintf("%+v", client.Device))
-		fmt.Fprintf(w, fmt.Sprintf("%+v", client.Os))
-		fmt.Fprintf(w, fmt.Sprintf("%+v", client.UserAgent))
+		ua, ok := query["q"]
+		if !ok {
+			json.NewEncoder(w).Encode(struct {
+				Error string
+			}{"To parse a UserAgent, use the 'q' query parameter"})
+
+			return
+		}
+
+		client := parser.Parse(ua[0])
+
+		json.NewEncoder(w).Encode(client)
 	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
