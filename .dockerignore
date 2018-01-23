@@ -1,0 +1,6 @@
+/bin
+/out
+/pkg
+/src
+
+/build-image.sh

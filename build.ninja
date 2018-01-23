@@ -1,0 +1,12 @@
+goenv = GOPATH=`pwd` GOBIN=`pwd`/bin
+
+# Rules
+rule cp
+  command = cp -rf $in $out
+
+rule gobuild
+  command = $goenv go build -o $out $in
+
+# Build (binary)
+build out/uaparser: gobuild uaparser.go
+build out/regexes.yaml: cp src/github.com/ua-parser/uap-go/uap-core/regexes.yaml
