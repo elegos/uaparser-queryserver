@@ -17,6 +17,7 @@ docker run --rm \
 
 # Build application image
 docker build \
+	--quiet  \
 	--no-cache \
 	--tag uaparser-queryserver \
 	--file Dockerfile.app .
